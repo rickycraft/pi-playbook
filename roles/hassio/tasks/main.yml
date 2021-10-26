@@ -18,21 +18,13 @@
   - name: Install os-agent
     apt:
       deb: "https://github.com/home-assistant/os-agent/releases/download/{{ os_agent_version }}/os-agent_{{ os_agent_version }}_linux_{{ hassio_machine_arch }}.deb"
-  - name: Get install script
-    get_url:
-      url: https://github.com/home-assistant/supervised-installer/releases/latest/download/homeassistant-supervised.deb
-      dest: /root
-  # - name: Remove NetworkManager config
-  #   file:
-  #     path: /etc/NetworkManager/NetworkManager.conf
-  #     state: absent
-  - name: Remove debian network config
+  - name: Remove debian config
     file:
       path: /etc/network/interfaces
       state: absent
     when:
       - ansible_distribution == "Debian"
-  - name: Remove configure netplan
+  - name: Remove netplan config
     copy:
       src: files/50-cloud-init.yaml
       dest: /etc/netplan/50-cloud-init.yaml

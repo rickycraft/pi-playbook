@@ -1,4 +1,5 @@
 ---
 os_agent_version: "1.2.2"
 hassio_data_folder: "/home/hassio"
-hassio_machine_type: "raspberrypi4-64"
+hassio_machine_type: "raspberrypi4-32"
+hassio_machine_arch: "armv7"

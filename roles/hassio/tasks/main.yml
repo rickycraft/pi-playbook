@@ -17,7 +17,7 @@
       state: stopped
   - name: Install os-agent
     apt:
-      deb: "https://github.com/home-assistant/os-agent/releases/download/{{ os_agent_version }}/os-agent_{{ os_agent_version }}_linux_{{ ansible_architecture }}.deb"
+      deb: "https://github.com/home-assistant/os-agent/releases/download/{{ os_agent_version }}/os-agent_{{ os_agent_version }}_linux_{{ hassio_machine_arch }}.deb"
   - name: Get install script
     get_url:
       url: https://github.com/home-assistant/supervised-installer/releases/latest/download/homeassistant-supervised.deb

@@ -1,0 +1,32 @@
+---
+version: '3'
+
+services:
+  apt-cacher-ng:
+    image: sameersbn/apt-cacher-ng
+    container_name: apt-cacher-ng
+    ports:
+      - "3142:3142"
+    volumes:
+      - apt-cache:/var/cache/apt-cacher-ng
+    restart: unless-stopped
+
+  docker-proxy:
+    image: rpardini/docker-registry-proxy
+    container_name: docker-proxy
+    ports:
+      - "3128:3128"
+    volumes:
+      - docker-cache:/docker_mirror_cache
+      - docker-certs:/ca
+    environment:
+      - REGISTRIES="gcr.io"
+    restart: unless-stopped
+    
+volumes:
+  apt-cache:
+    external: true
+  docker-cache:
+    external: true
+  docker-certs:
+    external: true

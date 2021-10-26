@@ -1,16 +1,16 @@
 ---
-  - name: Check swap file
+  - name: Check if already exists
     stat:
       path: /swapfile
     register: swap_check
-  - name: Create wap
+  - name: Create swapfile
     command: fallocate -l 2G /swapfile
     when: not swap_check.stat.exists
   - name: Set swap permission
     file:
       path: /swapfile
       mode: "0600"
-  - name: Format swap
+  - name: Format swapfile
     command: mkswap /swapfile
     when: not swap_check.stat.exists
   - name: Write swap entry in fstab

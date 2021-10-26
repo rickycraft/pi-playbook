@@ -1,0 +1,27 @@
+---
+- hosts: raspi
+  become: true
+  tasks:
+    - name: Prepare files
+      command:
+        cmd: "bash get-files"
+        creates: files
+      delegate_to: localhost
+      become: no
+    - name: Update cache
+      apt:
+        name: python3-apt
+        update_cache: true
+        state: present
+    - name: Run roles
+      include_role:
+        name: "{{ item }}"
+      loop:
+        - python
+        - docker
+        # - script
+        # - swap
+        # - nginx-proxy-manager
+        # - pill-bot
+        - hassio
+

@@ -1,0 +1,37 @@
+---
+  - name: Generate locales
+    community.general.locale_gen:
+      name: "{{ locale }}"
+      state: present
+    loop: ["it_IT.UTF-8", "en_US.UTF-8"]
+    loop_control:
+      loop_var: locale
+  - name: Set timezone
+    community.general.timezone:
+      name: "Europe/Rome"
+  - name: Copy repo
+    git:
+      repo: "git@github.com:rickycraft/telegram_pill_bot.git"
+      dest: /root/telegram_pill_bot
+  - name: Copy files
+    copy:
+      src: "files/{{ filename }}"
+      dest: "/root/telegram_pill_bot/{{ filename }}"
+    loop: ["bot_token","db.json"]
+    loop_control:
+      loop_var: filename
+  - name: Create virtualenv
+    pip:
+      requirements: /root/telegram_pill_bot/install/requirements.txt
+      virtualenv: /root/telegram_pill_bot/env
+      virtualenv_python: 3.9
+  - name: Install pill-bot service
+    copy:
+      src: /root/telegram_pill_bot/install/pill-bot.service
+      dest: /etc/systemd/system/pill-bot.service
+      remote_src: true
+  - name: Start the service
+    systemd:
+      daemon_reload: true
+      name: pill-bot.service
+      enabled: true

@@ -1,0 +1,44 @@
+---
+  - name: Install packages
+    apt:
+      name: ["tmux","curl","sysstat","htop","git","unzip","zip","tar"]
+      state: present
+  - name: Allow root login
+    lineinfile:
+      path: "/etc/ssh/sshd_config"
+      regexp: "^#PermitRootLogin without-password"
+      line: "PermitRootLogin without-password"
+  - name: Copy ssh dir
+    copy:
+      src: files/.ssh/
+      dest: /root/.ssh
+      mode: '600'
+  - name: Set priv key permission
+    copy:
+      src: files/id_rsa
+      dest: /root/.ssh/id_rsa
+      mode: '400'
+  - name: Copy ssh fingerprint
+    copy:
+      src: files/ssh_host/
+      dest: /etc/ssh
+  - name: Clone git script
+    git:
+      repo: "git@github.com:rickycraft/script.git"
+      dest: /root/script
+  - name: Add cron path
+    cron:
+      name: PATH
+      env: yes
+      job: "/bin:/usr/bin:/sbin:/root/script/hassio:/root/script/bash"
+  - name: Cron
+    cron:
+      name: "Cron {{ item.file }}"
+      job: "{{ item.file }}"
+      minute: "0"
+      hour: "{{ item.hour }}"
+      weekday: "{{ item.weekday }}"
+    loop:
+    - { file: "ha-backup", hour: "3", weekday: "*"}
+    - { file: "nginx-backup", hour: "4", weekday: "1"}
+    - { file: "bot-backup", hour: "4", weekday: "*"}

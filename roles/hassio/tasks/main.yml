@@ -1,0 +1,43 @@
+---
+  - name: Install required packages
+    apt:
+      name:
+        - jq
+        - curl
+        - avahi-daemon
+        - udisks2
+        - libglib2.0-bin
+        - network-manager
+        - apparmor
+      state: present
+  - name: Disable ModemManager
+    service:
+      name: ModemManager
+      enabled: false
+      state: stopped
+  - name: Install os-agent
+    apt:
+      deb: "https://github.com/home-assistant/os-agent/releases/download/{{ os_agent_version }}/os-agent_{{ os_agent_version }}_linux_{{ ansible_architecture }}.deb"
+  - name: Get install script
+    get_url:
+      url: https://github.com/home-assistant/supervised-installer/releases/latest/download/homeassistant-supervised.deb
+      dest: /root
+  - name: Remove NetworkManager config
+    file:
+      path: /etc/NetworkManager/NetworkManager.conf
+      state: absent
+  - name: Remove os-specific network config
+    file:
+      path: /etc/network/interfaces
+      state: absent
+  - name: Create install dir
+    file:
+      path: "{{ hassio_data_folder }}/apparmor"
+      state: directory
+      mode: '0755'
+  - name: Install homeassistant
+    apt:
+      deb: https://github.com/home-assistant/supervised-installer/releases/latest/download/homeassistant-supervised.deb
+    environment:
+      DATA_SHARE: "{{ hassio_data_folder }}"
+    register: hassio_out

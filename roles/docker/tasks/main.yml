@@ -1,4 +1,31 @@
 ---
+- name: Create docker.service.d dir
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+
+- name: Configure docker proxy
+  copy:
+    dest: /etc/systemd/system/docker.service.d/http-proxy.conf
+    src: files/http-proxy.conf
+
+- name: Install docker proxy cert
+  get_url:
+    url: "http://{{ apt_proxy }}:3128/ca.crt"
+    dest: /usr/share/ca-certificates/docker_registry_proxy.crt
+  register: copy_docker_cert
+
+- name: Add docker proxy cert to list
+  lineinfile:
+    line: docker_registry_proxy.crt
+    path: /etc/ca-certificates.conf
+  when: copy_docker_cert.changed
+
+- name: Update ca list
+  command:
+    cmd: update-ca-certificates --fresh
+  when: copy_docker_cert.changed
+
 - name: Check if Docker is already present.
   command: which docker
   failed_when: false

@@ -12,6 +12,10 @@
         creates: files
       delegate_to: localhost
       become: no
+    - name: Configure apt proxy
+      copy:
+        dest: /etc/apt/apt.conf.d/30proxy
+        content: 'Acquire::http { Proxy "http://{{ apt_proxy }}:3142"; }'
     - name: Update cache
       apt:
         name: python3-apt
@@ -22,10 +26,10 @@
         name: "{{ item }}"
       loop:
         - python
+        - script
         - docker
-        # - script
-        # - swap
-        # - nginx-proxy-manager
+        - swap
+        - nginx-proxy-manager
         # - pill-bot
         - hassio
 

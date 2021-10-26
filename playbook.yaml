@@ -1,6 +1,10 @@
 ---
 - hosts: raspi
   become: true
+
+  vars_files:
+    - config.yml
+  
   tasks:
     - name: Prepare files
       command:

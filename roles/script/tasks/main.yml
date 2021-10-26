@@ -33,12 +33,14 @@
       job: "/bin:/usr/bin:/sbin:/root/script/hassio:/root/script/bash"
   - name: Cron
     cron:
-      name: "Cron {{ item.file }}"
-      job: "{{ item.file }}"
+      name: "Cron {{ outer_item.file }}"
+      job: "{{ outer_item.file }}"
       minute: "0"
-      hour: "{{ item.hour }}"
-      weekday: "{{ item.weekday }}"
+      hour: "{{ outer_item.hour }}"
+      weekday: "{{ outer_item.weekday }}"
     loop:
-    - { file: "ha-backup", hour: "3", weekday: "*"}
-    - { file: "nginx-backup", hour: "4", weekday: "1"}
-    - { file: "bot-backup", hour: "4", weekday: "*"}
+      - { file: "ha-backup", hour: "3", weekday: "*"}
+      - { file: "nginx-backup", hour: "4", weekday: "1"}
+      - { file: "bot-backup", hour: "4", weekday: "*"}
+    loop_control:
+        loop_var: outer_item

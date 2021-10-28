@@ -12,10 +12,15 @@
         creates: files
       delegate_to: localhost
       become: no
-    - name: Configure apt proxy
-      copy:
-        dest: /etc/apt/apt.conf.d/30proxy
-        content: 'Acquire::http { Proxy "http://{{ apt_proxy }}:3142"; }'
+    - name: Get check for ANSIBLECACHE
+      debug:
+        msg: "{{ lookup('env','ANSIBLECACHE') }}"
+      delegate_to: localhost
+      become: no
+      register: ansible_cache
+    - name: Include cache
+      include_role: cache
+      when: ansible_cache == "1"
     - name: Update cache
       apt:
         name: python3-apt
@@ -23,7 +28,7 @@
         state: present
     - name: Run roles
       include_role:
-        name: "{{ item }}"
+        name: "{{ role_name }}"
       loop:
         - python
         - script
@@ -32,4 +37,5 @@
         - nginx-proxy-manager
         # - pill-bot
         - hassio
-
+      loop_control:
+        loop_var: role_name

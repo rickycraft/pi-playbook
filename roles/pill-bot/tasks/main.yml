@@ -17,7 +17,7 @@
     copy:
       src: "files/{{ filename }}"
       dest: "/root/telegram_pill_bot/{{ filename }}"
-    loop: ["bot_token","db.json"]
+    loop: ["bot_token", "db.json"]
     loop_control:
       loop_var: filename
   - name: Create virtualenv

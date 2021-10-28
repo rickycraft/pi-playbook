@@ -1,7 +1,7 @@
 ---
   - name: Install packages
     apt:
-      name: ["tmux","curl","sysstat","htop","git","unzip","zip","tar"]
+      name: ["tmux", "curl", "sysstat", "htop", "git", "unzip", "zip", "tar"]
       state: present
   - name: Allow root login
     lineinfile:
@@ -43,4 +43,4 @@
       - { file: "nginx-backup", hour: "4", weekday: "1"}
       - { file: "bot-backup", hour: "4", weekday: "*"}
     loop_control:
-        loop_var: outer_item
+      loop_var: outer_item

@@ -1,0 +1,4 @@
+skip_list:
+  - git-latest
+  - risky-file-permissions
+  - no-handler

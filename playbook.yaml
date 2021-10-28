@@ -19,7 +19,8 @@
       become: no
       register: ansible_cache
     - name: Include cache
-      include_role: cache
+      include_role:
+        name: cache
       when: ansible_cache == "1"
     - name: Update cache
       apt:
@@ -34,8 +35,8 @@
         - script
         - docker
         - swap
-        - nginx-proxy-manager
-        # - pill-bot
+        - nginx_proxy_manager
+        # - pill_bot
         - hassio
       loop_control:
         loop_var: role_name

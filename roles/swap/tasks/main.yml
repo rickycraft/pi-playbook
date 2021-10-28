@@ -1,31 +1,31 @@
 ---
-  - name: Check if already exists
-    stat:
-      path: /swapfile
-    register: swap_check
-  - name: Create swapfile
-    command: fallocate -l 2G /swapfile
-    when: not swap_check.stat.exists
-  - name: Set swap permission
-    file:
-      path: /swapfile
-      mode: "0600"
-  - name: Format swapfile
-    command: mkswap /swapfile
-    when: not swap_check.stat.exists
-  - name: Write swap entry in fstab
-    mount: 
-      name: none
-      src: /swapfile
-      fstype: swap
-      opts: sw
-      passno: 0
-      dump: 0
-      state: present
-  - name: Turn on swap 
-    command: swapon -a
-    when: not swap_check.stat.exists
-  - name: Set swappiness
-    lineinfile:
-      path: "/etc/sysctl.conf"
-      line: "vm.swappiness=20"
+- name: Check if already exists
+  stat:
+    path: /swapfile
+  register: swap_check
+- name: Create swapfile
+  command: fallocate -l 2G /swapfile
+  when: not swap_check.stat.exists
+- name: Set swap permission
+  file:
+    path: /swapfile
+    mode: "0600"
+- name: Format swapfile
+  command: mkswap /swapfile
+  when: not swap_check.stat.exists
+- name: Write swap entry in fstab
+  mount:
+    name: none
+    src: /swapfile
+    fstype: swap
+    opts: sw
+    passno: 0
+    dump: 0
+    state: present
+- name: Turn on swap
+  command: swapon -a
+  when: not swap_check.stat.exists
+- name: Set swappiness
+  lineinfile:
+    path: "/etc/sysctl.conf"
+    line: "vm.swappiness=20"

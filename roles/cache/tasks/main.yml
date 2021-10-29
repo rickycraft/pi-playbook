@@ -2,7 +2,7 @@
   - name: Configure apt proxy
     copy:
       dest: /etc/apt/apt.conf.d/30proxy
-      content: 'Acquire::http { Proxy "http://{{ apt_proxy }}:3142"; }'
+      content: 'Acquire::http::Proxy "http://{{ apt_proxy }}:3142";'
       
   - name: Create docker.service.d dir
     file:

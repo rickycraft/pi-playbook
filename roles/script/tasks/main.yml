@@ -16,6 +16,7 @@
     path: "/etc/ssh/sshd_config"
     regexp: "^#PermitRootLogin without-password"
     line: "PermitRootLogin without-password"
+  notify: "Restart ssh"
 - name: Copy ssh dir
   copy:
     src: files/.ssh/
@@ -30,6 +31,7 @@
   copy:
     src: files/ssh_host/
     dest: /etc/ssh
+  notify: "Restart ssh"
 - name: Clone git script
   git:
     repo: "git@github.com:rickycraft/script.git"
@@ -46,6 +48,7 @@
     minute: "0"
     hour: "{{ outer_item.hour }}"
     weekday: "{{ outer_item.weekday }}"
+  notify: "Restart cron"
   loop:
     - { file: "ha-backup", hour: "3", weekday: "*"}
     - { file: "nginx-backup", hour: "4", weekday: "1"}

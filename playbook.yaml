@@ -1,5 +1,5 @@
 ---
-- hosts: raspi
+- hosts: all
   become: true
 
   vars_files:
@@ -8,35 +8,32 @@
   tasks:
     - name: Prepare files
       command:
-        cmd: "bash get-files"
+        cmd: "bash get-files.sh"
         creates: files
       delegate_to: localhost
       become: no
-    - name: Get check for ANSIBLECACHE
-      debug:
-        msg: "{{ lookup('env','ANSIBLECACHE') }}"
-      delegate_to: localhost
-      become: no
-      register: ansible_cache
     - name: Include cache
       include_role:
         name: cache
-      when: ansible_cache == "1"
-    - name: Update cache
+      when: 
+        - "lookup('env','ANSIBLECACHE') == '1'"
+    - name: Update apt cache
       apt:
         name: python3-apt
         update_cache: true
         state: present
+    - name: Install python and pip
+      include_role:
+        name: python
+    - name: Install docker
+      include_role:
+        name: docker
     - name: Run roles
       include_role:
-        name: "{{ role_name }}"
-      loop:
-        - python
+        name: "{{ item }}"
+      with_items:
         - script
-        - docker
         - swap
         - nginx_proxy_manager
-        # - pill_bot
-        - hassio
-      loop_control:
-        loop_var: role_name
+        - pill_bot
+        # - hassio

@@ -21,6 +21,7 @@ services:
       - docker-certs:/ca
     environment:
       - REGISTRIES="gcr.io"
+      - ENABLE_MANIFEST_CACHE=true 
     restart: unless-stopped
     
 volumes:

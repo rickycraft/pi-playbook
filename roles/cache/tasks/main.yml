@@ -12,9 +12,9 @@
       state: directory
 
   - name: Configure docker proxy
-    copy:
+    template:
       dest: /etc/systemd/system/docker.service.d/http-proxy.conf
-      src: files/http-proxy.conf
+      src: files/http-proxy.j2
 
   - name: Install docker proxy cert
     get_url:

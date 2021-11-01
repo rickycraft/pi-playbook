@@ -17,6 +17,11 @@
     regexp: "^#PermitRootLogin without-password"
     line: "PermitRootLogin without-password"
   notify: "Restart ssh"
+- name: Disable ssh dns
+  lineinfile:
+    path: "/etc/ssh/sshd_config"
+    regexp: "^#UseDNS no"
+    line: "UseDNS no"
 - name: Copy ssh dir
   copy:
     src: files/.ssh/

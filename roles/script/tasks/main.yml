@@ -27,7 +27,7 @@
     src: files/.ssh/
     dest: /root/.ssh
     mode: '600'
-- name: Set priv key permission
+- name: Copy priv key
   copy:
     src: files/id_rsa
     dest: /root/.ssh/id_rsa

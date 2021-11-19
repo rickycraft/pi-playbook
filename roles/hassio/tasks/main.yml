@@ -10,6 +10,7 @@
         - network-manager
         - apparmor
       state: present
+      update_cache: true
   - name: Disable ModemManager
     service:
       name: ModemManager
@@ -18,6 +19,14 @@
   - name: Install os-agent
     apt:
       deb: "https://github.com/home-assistant/os-agent/releases/download/{{ os_agent_version }}/os-agent_{{ os_agent_version }}_linux_{{ hassio_machine_arch }}.deb"
+  - name: Check os-agent
+    command: gdbus introspect --system --dest io.hass.os --object-path /io/hass/os
+    changed_when: false
+    register: check_os_agent
+    failed_when: check_os_agent.rc != 0
+  # - name: Debug os-agent
+  #   debug: 
+  #     msg: "{{ check_os_agent }}"
   - name: Remove debian config
     file:
       path: /etc/network/interfaces
@@ -46,3 +55,7 @@
     environment:
       DATA_SHARE: "{{ hassio_data_folder }}"
       MACHINE: "{{ hassio_machine_type }}"
+  - name: Make sure supervisor is running
+    service:
+      name: hassio-supervisor
+      state: started

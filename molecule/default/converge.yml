@@ -1,9 +1,13 @@
 ---
 - name: Converge
   hosts: all
+  tasks:
+  - name: Set hassio params for virtualbox
+    set_fact:
+      hassio_machine_type: "qemux86-64"
+      hassio_machine_arch: "x86_64"
+
+- name: Import main playbook
+  import_playbook: "../../playbook.yaml"
   vars:
     enablecache: true
-    hassio_machine_type: "qemux86-64"
-    hassio_machine_arch: "x86_64"
-
-- import_playbook: "../../playbook.yaml"

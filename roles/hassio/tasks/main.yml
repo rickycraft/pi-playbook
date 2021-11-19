@@ -24,15 +24,18 @@
     changed_when: false
     register: check_os_agent
     failed_when: check_os_agent.rc != 0
-  # - name: Debug os-agent
-  #   debug: 
-  #     msg: "{{ check_os_agent }}"
+  - name: Check if is home-assistant is installed
+    command: dpkg-query -l homeassistant-supervised
+    failed_when: false
+    changed_when: false
+    register: check_home_assistant
   - name: Remove debian config
     file:
       path: /etc/network/interfaces
       state: absent
     when:
       - ansible_distribution == "Debian"
+      - check_home_assistant.rc != 0
   - name: Remove netplan config
     copy:
       src: files/50-cloud-init.yaml
@@ -40,6 +43,7 @@
       mode: '600'
     when:
       - ansible_distribution == "Ubuntu"
+      - check_home_assistant.rc != 0
   - name: Create install dir
     file:
       path: "{{ hassio_data_folder }}/apparmor"

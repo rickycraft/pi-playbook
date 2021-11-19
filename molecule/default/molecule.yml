@@ -3,10 +3,12 @@ dependency:
   name: galaxy
 driver:
   name: vagrant
+  provider:
+    name: libvirt
 platforms:
-  - name: instance
-    box: ubuntu/hirsute64
-    memory: 1024
+  - name: debianbox
+    box: debian/bullseye64
+    memory: 2048
     cpus: 2
 provisioner:
   name: ansible

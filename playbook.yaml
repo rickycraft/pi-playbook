@@ -22,10 +22,10 @@
           - python3-apt
         update_cache: true
         state: present
-    - name: Install python and pip
+    - name: Include python role
       include_role:
         name: python
-    - name: Install docker
+    - name: Include docker role
       include_role:
         name: docker
     - name: Run roles

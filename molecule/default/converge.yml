@@ -1,5 +1,9 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    enablecache: true
+    hassio_machine_type: "qemux86-64"
+    hassio_machine_arch: "x86_64"
 
 - import_playbook: "../../playbook.yaml"

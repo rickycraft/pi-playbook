@@ -15,11 +15,11 @@
     - name: Include cache
       include_role:
         name: cache
-      when: 
-        - "lookup('env','ANSIBLECACHE') == '1'"
+      when: ("lookup('env','ANSIBLECACHE') == '1'") or enablecache
     - name: Update apt cache
       apt:
-        name: python3-apt
+        name: 
+          - python3-apt
         update_cache: true
         state: present
     - name: Install python and pip
@@ -33,7 +33,6 @@
         name: "{{ item }}"
       with_items:
         - script
-        - swap
         - nginx_proxy_manager
-        - pill_bot
+        # - pill_bot
         # - hassio

@@ -35,5 +35,4 @@
         - script
         - nginx_proxy_manager
         - hassio
-        # - pill_bot
         

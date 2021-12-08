@@ -15,7 +15,7 @@
     - name: Include cache
       include_role:
         name: cache
-      when: ("lookup('env','ANSIBLECACHE') == '1'") or enablecache
+      when: enablecache is true
     - name: Update apt cache
       apt:
         name: 

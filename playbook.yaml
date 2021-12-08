@@ -25,6 +25,14 @@
     - name: Include python role
       include_role:
         name: python
+    - name: Remove x11
+      apt:
+        name: libx11-6
+        state: absent
+        purge: true
+        autoremove: true
+        autoclean: true
+      failed_when: false
     - name: Include docker role
       include_role:
         name: docker

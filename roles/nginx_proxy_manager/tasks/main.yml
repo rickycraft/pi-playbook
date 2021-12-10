@@ -18,3 +18,9 @@
       daemon_reload: true
       name: nginx-proxy-manager.service
       enabled: true
+  - name: Add backup script to cron
+    cron:
+      name: "Cron nginx-backup"
+      job: "nginx-backup"
+      minute: "0"
+      hour: "4"

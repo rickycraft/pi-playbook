@@ -35,3 +35,9 @@
       daemon_reload: true
       name: pill-bot.service
       enabled: true
+  - name: Add backup script to cron
+    cron:
+      name: "Cron bot-backup"
+      job: "bot-backup"
+      minute: "0"
+      hour: "4"

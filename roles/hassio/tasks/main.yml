@@ -63,3 +63,9 @@
     service:
       name: hassio-supervisor
       state: started
+  - name: Add backup script to cron
+    cron:
+      name: "Cron ha-backup"
+      job: "ha-backup"
+      minute: "0"
+      hour: "3"

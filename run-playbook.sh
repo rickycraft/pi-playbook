@@ -19,6 +19,19 @@ if [ $? != 0 ]; then
   echo "Cannot run ansible on host $AHOSTNAME"
   exit 1
 fi
-ansible-playbook -i inventory.tmp -u pi playbook.yaml
+
+if [ -n "$2"]; then
+  PLAYBOOK="$2"
+else
+  unset PLAYBOOK
+  read -p "Enter playbook: " PLAYBOOK
+fi
+
+if [ -f "$PLAYBOOK"]; then
+  ansible-playbook -i inventory.tmp -u pi "$PLAYBOOK"
+else
+  echo "$PLAYBOOK does not exist"
+  exit 1
+fi
 
 rm inventory.tmp

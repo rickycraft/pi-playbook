@@ -1,0 +1,45 @@
+---
+- hosts: all
+  become: true
+
+  vars_files:
+    - config.yml
+  
+  tasks:
+    - name: Prepare files
+      command:
+        cmd: "bash get-files.sh"
+        creates: files
+      delegate_to: localhost
+      become: no
+    - name: Include cache
+      include_role:
+        name: cache
+      when: enablecache is true
+    - name: Update apt cache
+      apt:
+        name: 
+          - python3-apt
+        update_cache: true
+        state: present
+    - name: Include python role
+      include_role:
+        name: python
+    - name: Remove x11
+      apt:
+        name: libx11-6
+        state: absent
+        purge: true
+        autoremove: true
+        autoclean: true
+      failed_when: false
+    - name: Include docker role
+      include_role:
+        name: docker
+    - name: Include base
+      include_role:
+        name: script
+    - name: Include pill_bot
+      include_role:
+        name: pill_bot
+        

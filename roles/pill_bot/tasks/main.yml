@@ -24,7 +24,7 @@
     pip:
       requirements: /root/telegram_pill_bot/install/requirements.txt
       virtualenv: /root/telegram_pill_bot/env
-      virtualenv_python: 3.9
+      virtualenv_python: "3.9"
   - name: Install pill-bot service
     copy:
       src: /root/telegram_pill_bot/install/pill-bot.service

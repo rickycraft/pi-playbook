@@ -1,0 +1,2 @@
+- disable swap dphys-swapfile.service
+- journalct to volatile memory

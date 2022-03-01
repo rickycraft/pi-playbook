@@ -1,2 +1,3 @@
 - disable swap dphys-swapfile.service
 - journalct to volatile memory
+- rsyslog remote logging server /etc/rsyslog.conf _._ @srvnas.roveri.local

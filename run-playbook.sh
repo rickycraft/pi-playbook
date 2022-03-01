@@ -20,15 +20,11 @@ if [ $? != 0 ]; then
   exit 1
 fi
 
-if [ -n "$2"]; then
-  PLAYBOOK="$2"
-else
-  unset PLAYBOOK
-  read -p "Enter playbook: " PLAYBOOK
-fi
+unset PLAYBOOK
+read -p "Enter playbook: " PLAYBOOK
 
-if [ -f "$PLAYBOOK"]; then
-  ansible-playbook -i inventory.tmp -u pi "$PLAYBOOK"
+if [[ -f "$PLAYBOOK.yml" ]]; then
+  ansible-playbook -i inventory.tmp -u pi "$PLAYBOOK.yml"
 else
   echo "$PLAYBOOK does not exist"
   exit 1

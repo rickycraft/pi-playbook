@@ -25,7 +25,8 @@
     state: started
     enabled: true
 
-- name: Install docker-compose using pip
-  pip:
+- name: Install docker-compose using apt
+  apt:
     name: docker-compose
     state: present
+    update_cache: true

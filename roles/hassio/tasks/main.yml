@@ -3,12 +3,13 @@
     apt:
       name:
         - jq
+        - wget
         - curl
-        - avahi-daemon
         - udisks2
         - libglib2.0-bin
         - network-manager
         - apparmor
+        - dbus
       state: present
       update_cache: true
   - name: Disable ModemManager

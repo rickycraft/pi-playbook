@@ -48,9 +48,3 @@
     name: PATH
     env: true
     job: "/bin:/usr/bin:/sbin:/root/script/hassio:/root/script/bash"
-- name: Disable swap
-  ansible.builtin.systemd:
-    name: dphys-swapfile.service
-    enabled: false
-    state: stopped
-  failed_when: false # to avoid problems in testing

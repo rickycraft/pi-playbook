@@ -26,6 +26,11 @@
         autoremove: true
         autoclean: true
       failed_when: false
+    - name: Disable swap
+      ansible.builtin.systemd:
+        name: dphys-swapfile.service
+        enabled: false
+        state: stopped
     - name: Run roles
       include_role:
         name: "{{ item }}"

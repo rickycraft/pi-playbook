@@ -1,0 +1,26 @@
+---
+  - name: Copy homelab files
+    copy:
+      src: files/homelab.tar
+      dest: /root/homelab.tar
+  - name: Unarchive
+    unarchive:
+      src: /root/homelab.tar
+      dest: /root
+      remote_src: true
+  - name: Install homelab service
+    copy:
+      src: /root/homelab/homelab.service
+      dest: /etc/systemd/system/homelab.service
+      remote_src: true
+  - name: Enable homelab service
+    systemd:
+      daemon_reload: true
+      name: homelab.service
+      enabled: true
+  - name: Add backup script to cron
+    cron:
+      name: "Cron homelab-backup"
+      job: "backup-dir /root/homelab 2>&1 | logger -p cron.info"
+      minute: "0"
+      hour: "4"

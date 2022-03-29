@@ -2,5 +2,5 @@
 os_agent_version: "1.2.2"
 hassio_data_folder: "/home/hassio"
 hassio_machine_type: "qemux86-64"
-hassio_machine_arch: "x86_84"
+hassio_machine_arch: "x86_64"
 apt_proxy: "10.0.0.81"

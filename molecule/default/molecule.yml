@@ -4,7 +4,7 @@ dependency:
 driver:
   name: vagrant
   provider:
-    name: libvirt
+    name: virtualbox
 platforms:
   - name: debianbox
     box: debian/bullseye64

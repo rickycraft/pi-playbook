@@ -3,6 +3,6 @@
   hosts: all
 
 - name: Import main playbook
-  import_playbook: "../../playbook.yaml"
+  import_playbook: "../../playbook.yml"
   vars:
     enablecache: true

@@ -29,6 +29,7 @@
     command: dpkg-query -l homeassistant-supervised
     failed_when: false
     changed_when: false
+    check_mode: false
     register: check_home_assistant
   - name: Remove debian config
     file:

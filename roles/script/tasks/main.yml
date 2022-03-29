@@ -28,12 +28,12 @@
   copy:
     src: files/.ssh/
     dest: /root/.ssh
-    mode: '600'
+    mode: "600"
 - name: Copy priv key
   copy:
     src: files/id_rsa
     dest: /root/.ssh/id_rsa
-    mode: '400'
+    mode: "400"
 - name: Copy ssh fingerprint
   copy:
     src: files/ssh_host/
@@ -48,3 +48,9 @@
     name: PATH
     env: true
     job: "/bin:/usr/bin:/sbin:/root/script/hassio:/root/script/bash"
+- name: Disable swap
+  ansible.builtin.systemd:
+    name: dphys-swapfile.service
+    enabled: false
+    state: stopped
+  failed_when: false # to avoid problems in testing

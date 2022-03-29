@@ -1,0 +1,17 @@
+---
+  - name: Update journalctl
+    copy:
+      src: files/journald.conf
+      dest: /etc/systemd/journald.conf
+  - name: Add blacklist rsyslogd
+    copy:
+      src: files/10-blacklist.conf
+      dest: /etc/rsyslog.d/
+  - name: Send log to srvnas
+    copy:
+      src: files/90-sendlog.conf
+      dest: /etc/rsyslog.d/
+  - name: Edit logrotate
+    copy:
+      src: files/rsyslog-logrotate
+      dest: /etc/logrotate.d/rsyslog

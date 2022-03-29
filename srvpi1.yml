@@ -4,7 +4,7 @@
 
   vars_files:
     - config.yml
-  
+
   tasks:
     - name: Prepare files
       command:
@@ -18,7 +18,7 @@
       when: enablecache is true
     - name: Update apt cache
       apt:
-        name: 
+        name:
           - python3-apt
         update_cache: true
         state: present
@@ -33,13 +33,13 @@
         autoremove: true
         autoclean: true
       failed_when: false
-    - name: Include docker role
+    - name: Run roles
       include_role:
-        name: docker
-    - name: Include base
-      include_role:
-        name: script
-    - name: Include pill_bot
-      include_role:
-        name: pill_bot
-        
+        name: "{{ item }}"
+      with_items:
+        - python
+        - docker
+        - script
+        - logs
+        - pill_bot
+

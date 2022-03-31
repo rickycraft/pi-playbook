@@ -27,7 +27,6 @@ if [[ -f "$PLAYBOOK.yml" ]]; then
   ansible-playbook -i inventory.tmp -u pi "$PLAYBOOK.yml"
 else
   echo "$PLAYBOOK does not exist"
-  exit 1
 fi
 
 rm inventory.tmp

@@ -29,7 +29,6 @@
         - python
         - docker
         - script
-        - logs
         - homelab
         - hassio
-
+        - logs

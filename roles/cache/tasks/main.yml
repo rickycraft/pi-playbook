@@ -1,39 +1,39 @@
 ---
-  - name: Configure apt proxy
-    copy:
-      dest: /etc/apt/apt.conf.d/30proxy
-      content: |
-        Acquire::http::Proxy "http://{{ apt_proxy }}:3142";
-        Acquire::HTTPS::Proxy "false";
-      
-  - name: Create docker.service.d dir
-    file:
-      path: /etc/systemd/system/docker.service.d
-      state: directory
+- name: Configure apt proxy
+  copy:
+    dest: /etc/apt/apt.conf.d/30proxy
+    content: |
+      Acquire::http::Proxy "http://{{ apt_proxy }}:3142";
+      Acquire::HTTPS::Proxy "false";
 
-  - name: Configure docker proxy
-    template:
-      dest: /etc/systemd/system/docker.service.d/http-proxy.conf
-      src: files/http-proxy.j2
+- name: Create docker.service.d dir
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
 
-  - name: Install docker proxy cert
-    get_url:
-      url: "http://{{ apt_proxy }}:3128/ca.crt"
-      dest: /usr/share/ca-certificates/docker_registry_proxy.crt
-    register: copy_docker_cert
+- name: Configure docker proxy
+  template:
+    dest: /etc/systemd/system/docker.service.d/http-proxy.conf
+    src: files/http-proxy.j2
 
-  - name: Add docker proxy cert to list
-    lineinfile:
-      line: docker_registry_proxy.crt
-      path: /etc/ca-certificates.conf
-    when: copy_docker_cert.changed
+- name: Install docker proxy cert
+  get_url:
+    url: "http://{{ apt_proxy }}:3128/ca.crt"
+    dest: /usr/share/ca-certificates/docker_registry_proxy.crt
+  register: copy_docker_cert
 
-  - name: Update ca list
-    command:
-      cmd: update-ca-certificates --fresh
-    when: copy_docker_cert.changed
+- name: Add docker proxy cert to list
+  lineinfile:
+    line: docker_registry_proxy.crt
+    path: /etc/ca-certificates.conf
+  when: copy_docker_cert.changed
 
-  - name: Set cache
-    apt:
-      cache_valid_time: 3600
-      update_cache: true
+- name: Update ca list
+  command:
+    cmd: update-ca-certificates --fresh
+  when: copy_docker_cert.changed
+
+- name: Set cache timeout
+  apt:
+    cache_valid_time: 3600
+    update_cache: true

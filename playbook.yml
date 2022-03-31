@@ -12,10 +12,6 @@
         creates: files
       delegate_to: localhost
       become: false
-    - name: Include cache
-      include_role:
-        name: cache
-      when: enablecache is true
     - name: Update apt cache
       apt:
         name:
@@ -26,8 +22,9 @@
       include_role:
         name: "{{ item }}"
       with_items:
-        - python
         - docker
+        - cache
+        - python
         - script
         - homelab
         - hassio
